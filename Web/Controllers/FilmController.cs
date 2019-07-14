@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models.Db;
@@ -11,8 +11,8 @@ using Models.Db.Entities;
 namespace Web.Controllers
 {
 	[ApiVersion("1.0")]
-	[Route("api/[controller]")]
-	public class FilmController : ControllerBase
+	[ODataRoutePrefix(nameof(Film))]
+	public class FilmController : ODataController
 	{
 		private readonly sakilaContext _context;
 
@@ -22,14 +22,16 @@ namespace Web.Controllers
 		}
 
 		// GET: api/Film
-		[HttpGet]
+		[ODataRoute]
+		[EnableQuery]
 		public async Task<ActionResult<IEnumerable<Film>>> GetFilm()
 		{
 			return await _context.Film.ToListAsync();
 		}
 
 		// GET: api/Film/5
-		[HttpGet("{id}")]
+		[ODataRoute("{id}")]
+		[EnableQuery]
 		public async Task<ActionResult<Film>> GetFilm(short id)
 		{
 			var film = await _context.Film.FindAsync(id);
@@ -44,6 +46,7 @@ namespace Web.Controllers
 
 		// PUT: api/Film/5
 		[HttpPut("{id}")]
+		[EnableQuery]
 		public async Task<IActionResult> PutFilm(short id, Film film)
 		{
 			if (id != film.FilmId)

@@ -1,120 +1,122 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Models.Db;
-using Models.Db.Entities;
+// using System;
+// using System.Collections.Generic;
+// using System.Linq;
+// using System.Threading.Tasks;
+// using Microsoft.AspNet.OData;
+// using Microsoft.AspNet.OData.Routing;
+// using Microsoft.AspNetCore.Http;
+// using Microsoft.AspNetCore.Mvc;
+// using Microsoft.EntityFrameworkCore;
+// using Models.Db;
+// using Models.Db.Entities;
 
-namespace Web.Controllers
-{
-	[ApiVersion("1.0")]
-	[Route("api/[controller]")]
-	public class FilmActorController : ControllerBase
-	{
-		private readonly sakilaContext _context;
+// namespace Web.Controllers
+// {
+// 	[ApiVersion("1.0")]
+// 	[ODataRoutePrefix("api/[controller]")]
+// 	public class FilmActorController : ODataController
+// 	{
+// 		private readonly sakilaContext _context;
 
-		public FilmActorController(sakilaContext context)
-		{
-			_context = context;
-		}
+// 		public FilmActorController(sakilaContext context)
+// 		{
+// 			_context = context;
+// 		}
 
-		// GET: api/FilmActor
-		[HttpGet]
-		public async Task<ActionResult<IEnumerable<FilmActor>>> GetFilmActor()
-		{
-			return await _context.FilmActor.ToListAsync();
-		}
+// 		// GET: api/FilmActor
+// 		[ODataRoute]
+// 		public async Task<ActionResult<IEnumerable<FilmActor>>> GetFilmActor()
+// 		{
+// 			return await _context.FilmActor.ToListAsync();
+// 		}
 
-		// GET: api/FilmActor/5
-		[HttpGet("{id}")]
-		public async Task<ActionResult<FilmActor>> GetFilmActor(short id)
-		{
-			var filmActor = await _context.FilmActor.FindAsync(id);
+// 		// GET: api/FilmActor/5
+// 		[ODataRoute("{id}")]
+// 		public async Task<ActionResult<FilmActor>> GetFilmActor(short id)
+// 		{
+// 			var filmActor = await _context.FilmActor.FindAsync(id);
 
-			if (filmActor == null)
-			{
-				return NotFound();
-			}
+// 			if (filmActor == null)
+// 			{
+// 				return NotFound();
+// 			}
 
-			return filmActor;
-		}
+// 			return filmActor;
+// 		}
 
-		// PUT: api/FilmActor/5
-		[HttpPut("{id}")]
-		public async Task<IActionResult> PutFilmActor(short id, FilmActor filmActor)
-		{
-			if (id != filmActor.ActorId)
-			{
-				return BadRequest();
-			}
+// 		// PUT: api/FilmActor/5
+// 		[HttpPut("{id}")]
+// 		public async Task<IActionResult> PutFilmActor(short id, FilmActor filmActor)
+// 		{
+// 			if (id != filmActor.ActorId)
+// 			{
+// 				return BadRequest();
+// 			}
 
-			_context.Entry(filmActor).State = EntityState.Modified;
+// 			_context.Entry(filmActor).State = EntityState.Modified;
 
-			try
-			{
-				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!FilmActorExists(id))
-				{
-					return NotFound();
-				}
-				else
-				{
-					throw;
-				}
-			}
+// 			try
+// 			{
+// 				await _context.SaveChangesAsync();
+// 			}
+// 			catch (DbUpdateConcurrencyException)
+// 			{
+// 				if (!FilmActorExists(id))
+// 				{
+// 					return NotFound();
+// 				}
+// 				else
+// 				{
+// 					throw;
+// 				}
+// 			}
 
-			return NoContent();
-		}
+// 			return NoContent();
+// 		}
 
-		// POST: api/FilmActor
-		[HttpPost]
-		public async Task<ActionResult<FilmActor>> PostFilmActor(FilmActor filmActor)
-		{
-			_context.FilmActor.Add(filmActor);
-			try
-			{
-				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateException)
-			{
-				if (FilmActorExists(filmActor.ActorId))
-				{
-					return Conflict();
-				}
-				else
-				{
-					throw;
-				}
-			}
+// 		// POST: api/FilmActor
+// 		[HttpPost]
+// 		public async Task<ActionResult<FilmActor>> PostFilmActor(FilmActor filmActor)
+// 		{
+// 			_context.FilmActor.Add(filmActor);
+// 			try
+// 			{
+// 				await _context.SaveChangesAsync();
+// 			}
+// 			catch (DbUpdateException)
+// 			{
+// 				if (FilmActorExists(filmActor.ActorId))
+// 				{
+// 					return Conflict();
+// 				}
+// 				else
+// 				{
+// 					throw;
+// 				}
+// 			}
 
-			return CreatedAtAction("GetFilmActor", new { id = filmActor.ActorId }, filmActor);
-		}
+// 			return CreatedAtAction("GetFilmActor", new { id = filmActor.ActorId }, filmActor);
+// 		}
 
-		// DELETE: api/FilmActor/5
-		[HttpDelete("{id}")]
-		public async Task<ActionResult<FilmActor>> DeleteFilmActor(short id)
-		{
-			var filmActor = await _context.FilmActor.FindAsync(id);
-			if (filmActor == null)
-			{
-				return NotFound();
-			}
+// 		// DELETE: api/FilmActor/5
+// 		[HttpDelete("{id}")]
+// 		public async Task<ActionResult<FilmActor>> DeleteFilmActor(short id)
+// 		{
+// 			var filmActor = await _context.FilmActor.FindAsync(id);
+// 			if (filmActor == null)
+// 			{
+// 				return NotFound();
+// 			}
 
-			_context.FilmActor.Remove(filmActor);
-			await _context.SaveChangesAsync();
+// 			_context.FilmActor.Remove(filmActor);
+// 			await _context.SaveChangesAsync();
 
-			return filmActor;
-		}
+// 			return filmActor;
+// 		}
 
-		private bool FilmActorExists(short id)
-		{
-			return _context.FilmActor.Any(e => e.ActorId == id);
-		}
-	}
-}
+// 		private bool FilmActorExists(short id)
+// 		{
+// 			return _context.FilmActor.Any(e => e.ActorId == id);
+// 		}
+// 	}
+// }
